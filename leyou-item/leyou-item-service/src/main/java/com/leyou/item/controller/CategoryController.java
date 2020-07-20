@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ import java.util.List;
  * @date: 2020/7/15 23:49
  * @version: v1.0
  */
-@Controller
+@RestController
 @RequestMapping("/category")
 public class CategoryController {
 
