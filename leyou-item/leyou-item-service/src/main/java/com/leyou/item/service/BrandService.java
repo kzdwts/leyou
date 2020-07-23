@@ -58,4 +58,21 @@ public class BrandService {
         // 返回
         return new PageResult<>(pageInfo.getTotal(), pageInfo.getPages(), pageInfo.getList());
     }
+
+    /**
+     * 新增品牌
+     *
+     * @param brand
+     * @param cids
+     */
+    public void saveBrand(Brand brand, List<Long> cids) {
+        // 保存品牌数据
+        int rows = brandMapper.insertSelective(brand);
+
+        // 保存品牌和类别对应关系
+        cids.forEach( cid -> {
+            brandMapper.saveBrandAndCategory(cid, brand.getId());
+        });
+
+    }
 }
