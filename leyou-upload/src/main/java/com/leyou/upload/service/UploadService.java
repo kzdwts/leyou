@@ -53,7 +53,7 @@ public class UploadService {
             }
 
             // 上传文件
-            file.transferTo(new File("E:\\output" + originalFilename));
+            file.transferTo(new File("E:\\output\\" + originalFilename));
             // 生成url返回
             return "http://image.leyou.com/" + originalFilename;
         } catch (IOException e) {
