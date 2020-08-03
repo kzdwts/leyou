@@ -1,5 +1,6 @@
 package com.leyou.item.controller;
 
+import com.leyou.item.pojo.Brand;
 import com.leyou.item.pojo.Category;
 import com.leyou.item.service.CategoryService;
 import com.netflix.discovery.converters.Auto;
@@ -53,4 +54,5 @@ public class CategoryController {
         }
         return ResponseEntity.ok(resultList);
     }
+
 }

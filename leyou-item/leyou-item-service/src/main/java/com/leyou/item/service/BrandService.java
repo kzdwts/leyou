@@ -70,9 +70,19 @@ public class BrandService {
         int rows = brandMapper.insertSelective(brand);
 
         // 保存品牌和类别对应关系
-        cids.forEach( cid -> {
+        cids.forEach(cid -> {
             brandMapper.saveBrandAndCategory(cid, brand.getId());
         });
 
+    }
+
+    /**
+     * 获取品牌详情
+     *
+     * @param id
+     * @return
+     */
+    public Brand queryBrandById(Long id) {
+        return brandMapper.selectByPrimaryKey(id);
     }
 }
