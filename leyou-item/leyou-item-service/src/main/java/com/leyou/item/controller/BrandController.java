@@ -2,8 +2,8 @@ package com.leyou.item.controller;
 
 import com.leyou.common.pojo.PageResult;
 import com.leyou.item.pojo.Brand;
+import com.leyou.item.pojo.Category;
 import com.leyou.item.service.BrandService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,10 +72,26 @@ public class BrandController {
      * @param id 品牌id
      * @return
      */
-    @GetMapping("/bid")
-    public ResponseEntity<Brand> queryBrandById(@PathVariable("id") Long id) {
-        Brand brand = brandService.queryBrandById(id);
-        return ResponseEntity.ok(brand);
+    @GetMapping("/bid/{id}")
+    public ResponseEntity queryBrandById(@PathVariable("id") Long id) {
+        List<Category> list = brandService.queryBrandById(id);
+        if (CollectionUtils.isEmpty(list)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 更新品牌信息
+     *
+     * @param brand
+     * @param cids
+     * @return
+     */
+    @PutMapping
+    public ResponseEntity updateBrand(Brand brand, @RequestParam("cids") List<Long> cids) {
+        brandService.updateById(brand, cids);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 

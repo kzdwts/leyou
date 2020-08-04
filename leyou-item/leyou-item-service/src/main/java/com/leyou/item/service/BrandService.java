@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.leyou.common.pojo.PageResult;
 import com.leyou.item.mapper.BrandMapper;
 import com.leyou.item.pojo.Brand;
+import com.leyou.item.pojo.Category;
 import com.netflix.discovery.converters.Auto;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class BrandService {
 
     @Autowired
     private BrandMapper brandMapper;
+
 
     /**
      * 分页查询品牌数据
@@ -82,7 +84,20 @@ public class BrandService {
      * @param id
      * @return
      */
-    public Brand queryBrandById(Long id) {
-        return brandMapper.selectByPrimaryKey(id);
+    public List<Category> queryBrandById(Long id) {
+        return brandMapper.queryBrandById(id);
+    }
+
+    public void updateById(Brand brand, List<Long> cids) {
+        // 保存品牌信息
+        int rows = brandMapper.updateByPrimaryKey(brand);
+
+        //删除品牌类别
+        brandMapper.deleteCategory(brand.getId());
+
+        // 保存品牌类别
+        cids.forEach(cid -> {
+            brandMapper.saveBrandAndCategory(cid, brand.getId());
+        });
     }
 }
