@@ -2,16 +2,15 @@ package com.leyou.item.controller;
 
 import com.leyou.common.pojo.PageResult;
 import com.leyou.item.pojo.SpuBo;
+import com.leyou.item.pojo.SpuDetail;
 import com.leyou.item.service.GoodsService;
+import org.apache.commons.lang.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,7 +21,6 @@ import java.util.List;
  * @version: v1.0
  */
 @RestController
-@RequestMapping("/spu")
 public class GoodsController {
 
     @Autowired
@@ -37,7 +35,7 @@ public class GoodsController {
      * @param saleable
      * @return
      */
-    @GetMapping("/page")
+    @GetMapping("/spu/page")
     public ResponseEntity<PageResult<SpuBo>> querySpuBoByPage(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "rows", defaultValue = "5") Integer rows,
@@ -51,4 +49,32 @@ public class GoodsController {
         }
         return ResponseEntity.ok(pageResult);
     }
+
+    /**
+     * 新增商品
+     *
+     * @param spuBo
+     * @return
+     */
+    @PostMapping("/goods")
+    public ResponseEntity saveGoods(@RequestBody SpuBo spuBo) {
+        goodsService.saveGoods(spuBo);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    /**
+     * 查询spuDetail详情
+     *
+     * @param spuId
+     * @return
+     */
+    @GetMapping("/spu/detail/{spuId}")
+    public ResponseEntity<SpuDetail> querySpuDetailBySpuId(@PathVariable("spuId") Long spuId) {
+        SpuDetail spuDetail = goodsService.querySpuDetailBySpuId(spuId);
+        if (spuDetail ==null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(spuDetail);
+    }
+
 }

@@ -2,6 +2,8 @@ package com.leyou.item.pojo;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -22,5 +24,15 @@ public class SpuBo extends Spu {
      * 品牌名称
      */
     private String bname;
+
+    /**
+     * 商品详情
+     */
+    private SpuDetail spuDetail;
+
+    /**
+     * sku列表
+     */
+    private List<Sku> skus;
 
 }
