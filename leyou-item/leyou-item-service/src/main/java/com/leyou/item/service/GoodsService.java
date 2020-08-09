@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
-import javax.script.ScriptEngine;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +21,7 @@ import java.util.List;
 /**
  * Created with IntelliJ IDEA.
  *
- * @Description:
+ * @Description: 商品管理 业务实现层
  * @author: kangyong
  * @date: 2020/8/9 14:28
  * @version: v1.0
