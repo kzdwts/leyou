@@ -99,4 +99,14 @@ public class BrandService {
             brandMapper.saveBrandAndCategory(cid, brand.getId());
         });
     }
+
+    /**
+     * 根据分类id查询品牌列表
+     *
+     * @param cid 分类id
+     * @return
+     */
+    public List<Brand> queryBrandsByCid(Long cid) {
+        return brandMapper.queryBrandsByCid(cid);
+    }
 }

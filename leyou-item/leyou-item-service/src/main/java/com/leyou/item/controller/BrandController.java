@@ -94,5 +94,20 @@ public class BrandController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    /**
+     * 根据分类id查询品牌列表
+     *
+     * @param cid 分类id
+     * @return
+     */
+    @GetMapping("/cid/{cid}")
+    public ResponseEntity<List<Brand>> queryBrandsByCid(@PathVariable("cid") Long cid) {
+        List<Brand> brandList = brandService.queryBrandsByCid(cid);
+        if (CollectionUtils.isEmpty(brandList)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(brandList);
+    }
+
 
 }
