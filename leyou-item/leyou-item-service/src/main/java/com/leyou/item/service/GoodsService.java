@@ -4,14 +4,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.leyou.common.pojo.PageResult;
 import com.leyou.item.mapper.*;
-import com.leyou.item.pojo.Spu;
-import com.leyou.item.pojo.SpuBo;
-import com.leyou.item.pojo.SpuDetail;
-import com.leyou.item.pojo.Stock;
+import com.leyou.item.pojo.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
@@ -112,7 +110,7 @@ public class GoodsService {
         spuMapper.insertSelective(spuBo);
 
         // 新增spuDetail
-        SpuDetail spuDetail = new SpuDetail();
+        SpuDetail spuDetail = spuBo.getSpuDetail();
         spuDetail.setSpuId(spuBo.getId());
         spuDetailMapper.insertSelective(spuDetail);
 
@@ -150,5 +148,60 @@ public class GoodsService {
      */
     public SpuDetail querySpuDetailBySpuId(Long spuId) {
         return spuDetailMapper.selectByPrimaryKey(spuId);
+    }
+
+    /**
+     * 查询商品详情列表
+     *
+     * @param spuId
+     * @return
+     */
+    public List<Sku> querySkuListBySpuId(Long spuId) {
+        Sku record = new Sku();
+        record.setSpuId(spuId);
+        List<Sku> skuList = skuMapper.select(record);
+        // 库存
+        skuList.forEach(sku -> {
+            Stock stock = stockMapper.selectByPrimaryKey(sku.getId());
+            // 库存数量
+            sku.setStock(stock.getStock());
+        });
+        return skuList;
+    }
+
+    /**
+     * 更新商品信息
+     *
+     * @param spuBo
+     * @return
+     */
+    @Transactional
+    public void updateGoods(SpuBo spuBo) {
+        // 查询sku
+        Sku record = new Sku();
+        record.setSpuId(spuBo.getId());
+        List<Sku> skus = skuMapper.select(record);
+        // 删除stock
+        skus.forEach( sku -> {
+            stockMapper.deleteByPrimaryKey(sku.getId());
+        });
+
+        // 删除sku
+        Sku condition = new Sku();
+        condition.setSpuId(spuBo.getId());
+        skuMapper.delete(condition);
+
+        // 新增sku
+        // 新增stock
+        this.saveSkuAndStock(spuBo);
+
+        spuBo.setCreateTime(null);
+        spuBo.setLastUpdateTime(new Date());
+        spuBo.setValid(null);
+        spuBo.setSaleable(null);
+        // 更新spu
+        this.spuMapper.updateByPrimaryKeySelective(spuBo);
+        // 更新spuDetail
+        this.spuDetailMapper.updateByPrimaryKeySelective(spuBo.getSpuDetail());
     }
 }

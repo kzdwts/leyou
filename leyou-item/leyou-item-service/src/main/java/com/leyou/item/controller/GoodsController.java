@@ -1,6 +1,7 @@
 package com.leyou.item.controller;
 
 import com.leyou.common.pojo.PageResult;
+import com.leyou.item.pojo.Sku;
 import com.leyou.item.pojo.SpuBo;
 import com.leyou.item.pojo.SpuDetail;
 import com.leyou.item.service.GoodsService;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -71,10 +74,37 @@ public class GoodsController {
     @GetMapping("/spu/detail/{spuId}")
     public ResponseEntity<SpuDetail> querySpuDetailBySpuId(@PathVariable("spuId") Long spuId) {
         SpuDetail spuDetail = goodsService.querySpuDetailBySpuId(spuId);
-        if (spuDetail ==null) {
+        if (spuDetail == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(spuDetail);
+    }
+
+    /**
+     * 查询商品详情列表
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/sku/list")
+    public ResponseEntity<List<Sku>> querySkuListBySpuId(Long id) {
+        List<Sku> skuList = goodsService.querySkuListBySpuId(id);
+        if (CollectionUtils.isEmpty(skuList)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(skuList);
+    }
+
+    /**
+     * 更新商品信息
+     *
+     * @param spuBo
+     * @return
+     */
+    @PutMapping("/goods")
+    public ResponseEntity addNewGoods(@RequestBody SpuBo spuBo) {
+        goodsService.updateGoods(spuBo);
+        return ResponseEntity.noContent().build();
     }
 
 }
