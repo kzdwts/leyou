@@ -24,7 +24,7 @@ public interface BrandMapper extends Mapper<Brand> {
     int saveBrandAndCategory(Long cid, Long bid);
 
     @Select("SELECT * FROM tb_category WHERE id IN(SELECT category_id FROM tb_category_brand WHERE brand_id=#{id})")
-    List<Category> queryBrandById(Long bid);
+    List<Category> queryBrandListById(Long bid);
 
     @Delete("DELETE FROM tb_category_brand WHERE brand_id=#{bid}")
     int deleteCategory(Long bid);

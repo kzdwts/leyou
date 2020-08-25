@@ -55,4 +55,21 @@ public class CategoryController {
         return ResponseEntity.ok(resultList);
     }
 
+    /**
+     * 根据id查询名称
+     *
+     * @param ids
+     * @return
+     */
+    @GetMapping("/names")
+    public ResponseEntity<List<String>> queryNamesByIds(@RequestParam("ids") List<Long> ids) {
+        // 参数不能为空
+        if (CollectionUtils.isEmpty(ids)) {
+            ResponseEntity.notFound().build();
+        }
+        // 查询
+        List<String> names = this.categoryService.queryNameByIds(ids);
+        return ResponseEntity.ok(names);
+    }
+
 }

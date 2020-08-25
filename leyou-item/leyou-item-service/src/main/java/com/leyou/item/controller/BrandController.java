@@ -73,8 +73,8 @@ public class BrandController {
      * @return
      */
     @GetMapping("/bid/{id}")
-    public ResponseEntity queryBrandById(@PathVariable("id") Long id) {
-        List<Category> list = brandService.queryBrandById(id);
+    public ResponseEntity queryBrandListById(@PathVariable("id") Long id) {
+        List<Category> list = brandService.queryBrandListById(id);
         if (CollectionUtils.isEmpty(list)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -107,6 +107,21 @@ public class BrandController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(brandList);
+    }
+
+    /**
+     * 根据id查询品牌详情
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity queryBrandById(@PathVariable("id") Long id) {
+        Brand brand = this.brandService.queryBrandById(id);
+        if (brand == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(brand);
     }
 
 
