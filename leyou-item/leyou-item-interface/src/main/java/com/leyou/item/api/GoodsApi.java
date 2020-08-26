@@ -54,5 +54,5 @@ public interface GoodsApi {
      * @return
      */
     @GetMapping("/sku/list")
-    public List<Sku> querySkuListBySpuId(Long id);
+    public List<Sku> querySkuListBySpuId(@RequestParam("id") Long id);
 }

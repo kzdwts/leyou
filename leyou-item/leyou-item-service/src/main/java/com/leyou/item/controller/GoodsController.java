@@ -87,7 +87,7 @@ public class GoodsController {
      * @return
      */
     @GetMapping("/sku/list")
-    public ResponseEntity<List<Sku>> querySkuListBySpuId(Long id) {
+    public ResponseEntity<List<Sku>> querySkuListBySpuId(@RequestParam("id") Long id) {
         List<Sku> skuList = goodsService.querySkuListBySpuId(id);
         if (CollectionUtils.isEmpty(skuList)) {
             return ResponseEntity.notFound().build();
