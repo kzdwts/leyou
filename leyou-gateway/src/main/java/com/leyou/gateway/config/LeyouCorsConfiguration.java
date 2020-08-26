@@ -21,7 +21,10 @@ public class LeyouCorsConfiguration {
     public CorsFilter corsFilter() {
 
         CorsConfiguration config = new CorsConfiguration();
+        // 允许的域
         config.addAllowedOrigin("http://manage.leyou.com");
+        config.addAllowedOrigin("http://www.leyou.com");
+        //
         config.setAllowCredentials(true);
         config.addAllowedMethod("POST");
         config.addAllowedMethod("PUT");

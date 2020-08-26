@@ -13,3 +13,4 @@ zuul:
   routes:
     item-service: /item/**
     leyou-upload: /file/**
+    search-service: /search/**
