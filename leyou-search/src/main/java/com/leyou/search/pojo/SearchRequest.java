@@ -32,12 +32,38 @@ public class SearchRequest implements Serializable {
      */
     private Integer page;
 
+    /**
+     * 排序字段
+     */
+    private String sortBy;
+
+    /**
+     * 是否降序
+     */
+    private Boolean descending;
+
     public String getKey() {
         return key;
     }
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
+    }
+
+    public Boolean getDescending() {
+        return descending;
+    }
+
+    public void setDescending(Boolean descending) {
+        this.descending = descending;
     }
 
     public Integer getPage() {
