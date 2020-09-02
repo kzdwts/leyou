@@ -85,7 +85,7 @@ public class GoodsService {
                 paramMap.put(param.getName(), value);
             } else {
                 // 特殊规格参数
-                List<Object> value = specialSpecMap.get(param.getId().toString());
+                List<Object> value = specialSpecMap.get(param.getId());
                 paramMap.put(param.getName(), value);
             }
         });
@@ -104,7 +104,7 @@ public class GoodsService {
         // 获取spu下所有sku,并转换为json字符串
         goods.setSkus(MAPPER.writeValueAsString(skuMapList));
         // 获取所有查询的规格参数{key:value}
-        goods.setSpecs(null);
+        goods.setSpecs(paramMap);
 
         return goods;
     }
