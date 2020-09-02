@@ -140,9 +140,7 @@ public class SearchService {
             List<Object> options = new ArrayList<>();
             // 解析每个聚合
             Aggregation value = entry.getValue();
-            if (ObjectUtils.isEmpty(value.getMetaData())) {
-                continue;
-            }
+
             StringTerms terms = (StringTerms) value;
             // 遍历每个聚合中桶，把桶中key放入收集规格参数的集合中
             terms.getBuckets().forEach(bucket -> options.add(bucket.getKeyAsString()));
