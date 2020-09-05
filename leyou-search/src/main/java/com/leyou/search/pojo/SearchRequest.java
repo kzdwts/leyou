@@ -1,6 +1,7 @@
 package com.leyou.search.pojo;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,6 +42,19 @@ public class SearchRequest implements Serializable {
      * 是否降序
      */
     private Boolean descending;
+
+    /**
+     * 品牌、分类、规格参数
+     */
+    private Map<String, Object> filter;
+
+    public Map<String, Object> getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Map<String, Object> filter) {
+        this.filter = filter;
+    }
 
     public String getKey() {
         return key;
