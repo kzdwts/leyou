@@ -182,7 +182,7 @@ public class GoodsService {
         record.setSpuId(spuBo.getId());
         List<Sku> skus = skuMapper.select(record);
         // 删除stock
-        skus.forEach( sku -> {
+        skus.forEach(sku -> {
             stockMapper.deleteByPrimaryKey(sku.getId());
         });
 
@@ -203,5 +203,15 @@ public class GoodsService {
         this.spuMapper.updateByPrimaryKeySelective(spuBo);
         // 更新spuDetail
         this.spuDetailMapper.updateByPrimaryKeySelective(spuBo.getSpuDetail());
+    }
+
+    /**
+     * 根据id查询spu信息
+     *
+     * @param id
+     * @return
+     */
+    public Spu querySpuById(Long id) {
+        return this.spuMapper.selectByPrimaryKey(id);
     }
 }

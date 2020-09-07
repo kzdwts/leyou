@@ -57,4 +57,18 @@ public class SpecificationService {
         return specParamList;
     }
 
+    /**
+     * 根据分类id查询规格参数组及参数详情
+     *
+     * @param cid
+     * @return
+     */
+    public List<SpecGroup> queryGroupsWithParam(Long cid) {
+        List<SpecGroup> groups = this.queryGroupsByCid(cid);
+        groups.forEach(group -> {
+            List<SpecParam> params = this.queryParams(group.getId(), null, null, null);
+            group.setParams(params);
+        });
+        return groups;
+    }
 }
