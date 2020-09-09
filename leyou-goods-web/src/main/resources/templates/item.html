@@ -100,19 +100,13 @@
 		<div id="item">
 			<div class="crumb-wrap">
 				<ul class="sui-breadcrumb">
-					<li>
-						<a href="#">手机</a>
+					<li th:each="category : ${categories}">
+						<a href="#" th:text="${category.name}">手机</a>
 					</li>
 					<li>
-						<a href="#">手机通讯</a>
+						<a href="#" th:text="${brand.name}">Apple</a>
 					</li>
-					<li>
-						<a href="#">手机</a>
-					</li>
-					<li>
-						<a href="#">Apple</a>
-					</li>
-					<li class="active">Apple iPhone 6s</li>
+					<li class="active" th:text="${spu.title}">Apple iPhone 6s</li>
 				</ul>
 			</div>
 			<!--product-info-->
@@ -123,7 +117,7 @@
 						<!--默认第一个预览-->
 						<div id="preview" class="spec-preview">
 							<span class="jqzoom">
-								<img jqimg="/img/_/b1.png" src="/img/_/s1.png" width="400px" height="400px"/>
+								<img :jqimg="images[0]" :src="images[0]" width="400px" height="400px"/>
 							</span>
 						</div>
 						<!--下方的缩略图-->
@@ -132,15 +126,9 @@
 							<!--左右按钮-->
 							<div class="items">
 								<ul>
-									<li><img src="/img/_/s1.png" bimg="/img/_/b1.png" onmousemove="preview(this)" /></li>
-									<li><img src="/img/_/s2.png" bimg="/img/_/b2.png" onmousemove="preview(this)" /></li>
-									<li><img src="/img/_/s3.png" bimg="/img/_/b3.png" onmousemove="preview(this)" /></li>
-									<li><img src="/img/_/s1.png" bimg="/img/_/b1.png" onmousemove="preview(this)" /></li>
-									<li><img src="/img/_/s2.png" bimg="/img/_/b2.png" onmousemove="preview(this)" /></li>
-									<li><img src="/img/_/s3.png" bimg="/img/_/b3.png" onmousemove="preview(this)" /></li>
-									<li><img src="/img/_/s1.png" bimg="/img/_/b1.png" onmousemove="preview(this)" /></li>
-									<li><img src="/img/_/s2.png" bimg="/img/_/b2.png" onmousemove="preview(this)" /></li>
-									<li><img src="/img/_/s3.png" bimg="/img/_/b3.png" onmousemove="preview(this)" /></li>
+									<li v-for="(image, i) in images" :key="i">
+										<img :src="image" :bimg="image" onmousemove="preview(this)" />
+									</li>
 								</ul>
 							</div>
 							<a class="next">&gt;</a>
@@ -149,14 +137,14 @@
 				</div>
 				<div class="fr itemInfo-wrap">
 					<div class="sku-name">
-						<h4>Apple iPhone 6s（A1700）64G玫瑰金色 移动通信电信4G手机</h4>
+						<h4 v-text="sku.title">Apple iPhone 6s（A1700）64G玫瑰金色 移动通信电信4G手机</h4>
 					</div>
-					<div class="news"><span>推荐选择下方[移动优惠购],手机套餐齐搞定,不用换号,每月还有花费返</span></div>
+					<div class="news"><span th:utext="${spu.subTitle}">推荐选择下方[移动优惠购],手机套餐齐搞定,不用换号,每月还有花费返</span></div>
 					<div class="summary">
 						<div class="summary-wrap">
 							<div class="fl title"><i>价　　格</i></div>
 							<div class="fl price">
-								<i>¥</i><em>5299.00</em><span>降价通知</span>
+								<i>¥</i><em v-text="ly.formatPrice(sku.price)">5299.00</em><span>降价通知</span>
 							</div>
 							<div class="fr remark"><i>累计评价</i><em>612188</em></div>
 						</div>
@@ -191,51 +179,17 @@
 					</div>
 					<div class="clearfix choose">
 						<div id="specification" class="summary-wrap clearfix">
-							<dl>
+							<dl v-for="(v,k) in specialSpec" :key="k">
 								<dt>
 									<div class="fl title">
-									<i>选择颜色</i>
-								</div>
+										<i>{{paramMap[k]}}</i>
+									</div>
 								</dt>
-								<dd>
-									<a href="javascript:;" class="selected">
-										金色<span title="点击取消选择">&nbsp;</span>
+								<dd v-for="(str,j) in v" :key="j">
+									<a href="javascript:;" :class="{selected: j===indexes[k]}" @click="indexes[k]=j">
+										{{str}}<span v-if="j===indexes[k]" title="点击取消选择">&nbsp;</span>
 									</a>
 								</dd>
-								<dd><a href="javascript:;">银色</a></dd>
-								<dd><a href="javascript:;">黑色</a></dd>
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>内存容量</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">16G<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">64G</a></dd>
-								<dd><a href="javascript:;" class="locked">128G</a></dd>
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>选择版本</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">公开版<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">移动版</a></dd>							
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>购买方式</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">官方标配<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">移动优惠版</a></dd>	
-								<dd><a href="javascript:;"  class="locked">电信优惠版</a></dd>
 							</dl>
 						</div>
 
@@ -670,12 +624,42 @@
 <script src="/js/vue/vue.js"></script>
 <script src="/js/axios.min.js"></script>
 <script src="/js/common.js"></script>
+<script th:inline="javascript">
+	// 特殊规格参数
+	const specialSpec = JSON.parse(/*[[${spuDetail.specialSpec}]]*/ "");
+	// sku集合
+	const skus = /*[[${skus}]]*/ [];
+	// 规格参数
+	const paramMap = /*[[${paramMap}]]*/ {};
 
+	// 初始化选中索引
+	const indexes = {};
+	Object.keys(specialSpec).forEach(key => {
+		indexes[key] = 0;
+	})
+
+
+</script>
 <script>
     var itemVm = new Vue({
         el:"#itemApp",
         data:{
+        	ly,
+			specialSpec,
+			skus,
+			paramMap,
+			indexes,
+
         },
+		computed: {
+        	sku() {
+        		const index = Object.values(this.indexes).join("_");
+        		return this.skus.find(s => s.indexes == index);
+			},
+			images() {
+        		return this.sku.images ? this.sku.images.split(",") : [''];
+			}
+		},
         components:{
             lyTop: () => import('/js/pages/top.js')
         }
@@ -704,6 +688,15 @@ $(function(){
 <script type="text/javascript" src="/js/plugins/jquery.jqzoom/jquery.jqzoom.js"></script>
 <script type="text/javascript" src="/js/plugins/jquery.jqzoom/zoom.js"></script>
 <script type="text/javascript" src="index/index.js"></script>
+<script th:inline="javascript">
+	const a = /*[[${groups}]]*/ [];
+	const b = /*[[${paramMap}]]*/ [];
+	const c = /*[[${categories}]]*/ [];
+	const d = /*[[${spu}]]*/ {};
+	const e = /*[[${spuDetail}]]*/ {};
+	const f = /*[[${skus}]]*/ [];
+	const g = /*[[${brand}]]*/ {};
+</script>
 </body>
 
 </html>
