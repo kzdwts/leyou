@@ -45,7 +45,7 @@ public class GoodsController {
         model.addAllAttributes(map);
 
         // 生成静态页面
-        this.goodsHtmlService.createHtml(id);
+        this.goodsHtmlService.asyncExcute(id);
 
         return "item";
     }

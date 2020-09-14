@@ -1,5 +1,6 @@
 package com.leyou.goods.service;
 
+import com.leyou.common.utils.ThreadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -49,6 +50,23 @@ public class GoodsHtmlService {
                 pw.close();
             }
         }
+    }
+
+    /**
+     * 新建线程处理页面静态化
+     *
+     * @param spuId
+     */
+    public void asyncExcute(Long spuId) {
+        // 调用
+        ThreadUtil.execute(() -> createHtml(spuId));
+
+        /*ThreadUtil.execute(new Runnable() {
+            @Override
+            public void run() {
+                createHtml(spuId);
+            }
+        });*/
     }
 
 }
