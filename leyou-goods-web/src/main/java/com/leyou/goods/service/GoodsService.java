@@ -67,7 +67,7 @@ public class GoodsService {
         }
 
         // 查询规格参数组
-        List<SpecGroup> groups = this.specificationClient.queryGroupsByCid(spu.getCid3());
+        List<SpecGroup> groups = this.specificationClient.queryGoodsWithParam(spu.getCid3());
         
         // 查询特殊的参数
         List<SpecParam> params = this.specificationClient.queryParams(null, spu.getCid3(), null, null);

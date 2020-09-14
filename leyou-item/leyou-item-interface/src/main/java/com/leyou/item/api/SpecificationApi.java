@@ -50,6 +50,6 @@ public interface SpecificationApi {
      * @return
      */
     @GetMapping("/{cid}")
-    public ResponseEntity<List<SpecGroup>> queryGoodsWithParam(Long cid);
+    public List<SpecGroup> queryGoodsWithParam(@PathVariable(value = "cid") Long cid);
 
 }

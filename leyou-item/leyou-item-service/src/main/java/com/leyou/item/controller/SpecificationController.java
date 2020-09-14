@@ -66,7 +66,7 @@ public class SpecificationController {
      * @return
      */
     @GetMapping("/{cid}")
-    public ResponseEntity<List<SpecGroup>> queryGoodsWithParam(Long cid) {
+    public ResponseEntity<List<SpecGroup>> queryGoodsWithParam(@PathVariable(value = "cid") Long cid) {
         List<SpecGroup> groups = this.specificationService.queryGroupsWithParam(cid);
         if (CollectionUtils.isEmpty(groups)) {
             return ResponseEntity.notFound().build();
