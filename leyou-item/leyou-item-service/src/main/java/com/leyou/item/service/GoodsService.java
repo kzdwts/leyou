@@ -6,6 +6,8 @@ import com.leyou.common.pojo.PageResult;
 import com.leyou.item.mapper.*;
 import com.leyou.item.pojo.*;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +47,9 @@ public class GoodsService {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
 
     /**
@@ -114,9 +119,25 @@ public class GoodsService {
         spuDetail.setSpuId(spuBo.getId());
         spuDetailMapper.insertSelective(spuDetail);
 
-
         // 新增sku和库存
         saveSkuAndStock(spuBo);
+
+        // 发送消息到队列
+        sendMessage("insert", spuBo.getId());
+    }
+
+    /**
+     * 发送消息到队列
+     *
+     * @param type 类型
+     * @param id   商品id
+     */
+    private void sendMessage(String type, Long id) {
+        try {
+            this.amqpTemplate.convertAndSend("item." + type, id);
+        } catch (AmqpException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -203,6 +224,8 @@ public class GoodsService {
         this.spuMapper.updateByPrimaryKeySelective(spuBo);
         // 更新spuDetail
         this.spuDetailMapper.updateByPrimaryKeySelective(spuBo.getSpuDetail());
+
+        sendMessage("update", spuBo.getId());
     }
 
     /**

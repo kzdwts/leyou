@@ -69,4 +69,13 @@ public class GoodsHtmlService {
         });*/
     }
 
+    /**
+     * 删除商品页面
+     *
+     * @param id
+     */
+    public void deleteHtml(Long id) {
+        File file = new File("D:\\package\\nginx-1.15.3\\html\\item\\" + id + ".html");
+        file.deleteOnExit();
+    }
 }
