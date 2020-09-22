@@ -8,6 +8,7 @@ import com.leyou.search.client.CategoryClient;
 import com.leyou.search.client.GoodsClient;
 import com.leyou.search.client.SpecificationClient;
 import com.leyou.search.pojo.Goods;
+import com.leyou.search.repository.GoodsRepository;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ public class GoodsService {
     @Autowired
     private SpecificationClient specificationClient;
 
+    @Autowired
+    private GoodsRepository goodsRepository;
+
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     public Goods buildGoods(Spu spu) throws IOException {
@@ -69,9 +73,11 @@ public class GoodsService {
         // 查询spuDetail获取规格参数值
         SpuDetail spuDetail = this.goodsClient.querySpuDetailBySpuId(spu.getId());
         // 通用规格参数
-        Map<String, Object> genericSpecMap = MAPPER.readValue(spuDetail.getGenericSpec(), new TypeReference<Map<String, Object>>(){});
+        Map<String, Object> genericSpecMap = MAPPER.readValue(spuDetail.getGenericSpec(), new TypeReference<Map<String, Object>>() {
+        });
         // 特殊规格参数
-        Map<Long, List<Object>> specialSpecMap = MAPPER.readValue(spuDetail.getSpecialSpec(), new TypeReference<Map<Long, List<Object>>>(){});
+        Map<Long, List<Object>> specialSpecMap = MAPPER.readValue(spuDetail.getSpecialSpec(), new TypeReference<Map<Long, List<Object>>>() {
+        });
         // 定义map接收{规格参数名:规格参数值}
         Map<String, Object> paramMap = new HashMap<>();
         specParamList.forEach(param -> {
@@ -143,4 +149,24 @@ public class GoodsService {
         return result;
     }
 
+    /**
+     * 新增商品
+     *
+     * @param id
+     * @throws IOException
+     */
+    public void save(Long id) throws IOException {
+        Spu spu = this.goodsClient.querySpuById(id);
+        Goods goods = this.buildGoods(spu);
+        this.goodsRepository.save(goods);
+    }
+
+    /**
+     * 删除商品
+     *
+     * @param id
+     */
+    public void delete(Long id) {
+        this.goodsRepository.deleteById(id);
+    }
 }
