@@ -1,6 +1,7 @@
 package com.leyou.user.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,7 @@ import java.util.Date;
  * @date: 2020/9/24 12:56
  * @version: v1.0
  */
+@Data
 @Table(name = "tb_user")
 public class User {
     @Id
@@ -33,4 +35,5 @@ public class User {
 
     @JsonIgnore
     private String salt;// 密码的盐值
+
 }
