@@ -1,0 +1,19 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: user-service
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.10.132:3306/leyou?useSSL=false&serverTimezone=GMT%2B8&characterEncoding=utf-8
+    username: root
+    password: 1024KangYong@MySQL
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:10086/eureka
+  instance:
+    lease-renewal-interval-in-seconds: 5 # 5秒钟发送一次心跳
+    lease-expiration-duration-in-seconds: 10 # 10秒不发就过期
+mybatis:
+  type-aliases-package: com.leyou.user.pojo

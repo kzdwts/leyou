@@ -27,7 +27,6 @@ eureka:
     lease-expiration-duration-in-seconds: 10 # 10秒不发就过期
 
 # 日志
-
 logging:
   level:
     com.leyou.item.mapper: debug
