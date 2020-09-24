@@ -17,6 +17,7 @@
         <module>leyou-upload</module>
         <module>leyou-search</module>
         <module>leyou-goods-web</module>
+        <module>leyou-user</module>
     </modules>
     <!--聚合工程-父工程-->
     <packaging>pom</packaging>
