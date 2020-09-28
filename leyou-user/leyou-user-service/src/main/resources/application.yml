@@ -8,6 +8,9 @@ spring:
     url: jdbc:mysql://192.168.10.132:3306/leyou?useSSL=false&serverTimezone=GMT%2B8&characterEncoding=utf-8
     username: root
     password: 1024KangYong@MySQL
+  redis:
+    host: 192.168.10.132
+    port: 6379
 eureka:
   client:
     service-url:
