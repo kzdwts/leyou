@@ -51,7 +51,7 @@ public class UserController {
     public ResponseEntity<Void> sendVerifyCode(@RequestParam("phone") String phone) {
         // 参数非空校验
         if (StringUtils.isBlank(phone)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
         // 发送验证
