@@ -1,9 +1,16 @@
 package com.leyou.user.service;
 
+import com.leyou.common.utils.NumberUtils;
 import com.leyou.user.mapper.UserMapper;
 import com.leyou.user.pojo.User;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,6 +25,17 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private AmqpTemplate amqpTemplate;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    /**
+     * 验证码前缀
+     */
+    private static final String KEY_PREFIX = "user:verify:";
 
     /**
      * 校验用户数据
@@ -42,4 +60,22 @@ public class UserService {
         return this.userMapper.selectCount(record) == 0;
     }
 
+    /**
+     * 发送验证码
+     *
+     * @param phone
+     */
+    public void sendVerifyCode(String phone) {
+        // 生成验证码
+        String code = NumberUtils.generateCode(6);
+
+        // 发送消息到rabbitmq
+        Map<String, String> msg = new HashMap<>();
+        msg.put("phone", phone);
+        msg.put("code", code);
+        amqpTemplate.convertAndSend("leyou.sms.exchange", "verifycode.sms", msg);
+
+        // 保存验证码到redis
+        redisTemplate.opsForValue().set(KEY_PREFIX + phone, code, 5, TimeUnit.MINUTES);
+    }
 }

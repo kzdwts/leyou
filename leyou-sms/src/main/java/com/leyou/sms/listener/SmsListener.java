@@ -39,7 +39,7 @@ public class SmsListener {
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = "leyou.sms.queue", durable = "true"),
             exchange = @Exchange(value = "leyou.sms.exchange", ignoreDeclarationExceptions = "true", type = ExchangeTypes.TOPIC),
-            key = {"sms.verify.code"}
+            key = {"verifycode.sms"}
     ))
     public void listenSms(Map<String, String> msg) throws ClientException {
         // 非空校验
