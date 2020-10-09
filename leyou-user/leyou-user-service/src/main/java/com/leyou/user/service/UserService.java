@@ -109,4 +109,24 @@ public class UserService {
         // 入库
         return this.userMapper.insert(user) > 0 ? true : false;
     }
+
+    /**
+     * 查询用户信息
+     *
+     * @param username
+     * @param password
+     * @return
+     */
+    public User queryUser(String username, String password) {
+        User record = new User();
+        record.setUsername(username);
+        User user = this.userMapper.selectOne(record);
+
+        // 将客户端传过来的用户密码进行盐加密
+        password = CodecUtils.md5Hex(password, user.getSalt());
+        if (StringUtils.equals(password, user.getPassword())) {
+            return user;
+        }
+        return null;
+    }
 }
