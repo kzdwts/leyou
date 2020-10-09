@@ -3,11 +3,14 @@ package com.leyou.user.service;
 import com.leyou.common.utils.NumberUtils;
 import com.leyou.user.mapper.UserMapper;
 import com.leyou.user.pojo.User;
+import com.leyou.user.utils.CodecUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -77,5 +80,33 @@ public class UserService {
 
         // 保存验证码到redis
         redisTemplate.opsForValue().set(KEY_PREFIX + phone, code, 5, TimeUnit.MINUTES);
+    }
+
+    /**
+     * 用户注册
+     *
+     * @param user
+     * @param code
+     */
+    public Boolean register(User user, String code) {
+        // 验证码校验
+        String cacheCode = this.redisTemplate.opsForValue().get(KEY_PREFIX + user.getPhone());
+        if (!StringUtils.equals(cacheCode, code)) {
+            return false;
+        }
+
+        // 生成加密盐
+        String salt = CodecUtils.generateSalt();
+        user.setSalt(salt);
+
+        // 生成密码
+        user.setPassword(CodecUtils.md5Hex(user.getPassword(), salt));
+
+        // 补全参数
+        user.setId(null);
+        user.setCreated(new Date());
+
+        // 入库
+        return this.userMapper.insert(user) > 0 ? true : false;
     }
 }

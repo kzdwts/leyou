@@ -1,5 +1,6 @@
 package com.leyou.user.controller;
 
+import com.leyou.user.pojo.User;
 import com.leyou.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,22 @@ public class UserController {
 
         // 发送验证
         this.userService.sendVerifyCode(phone);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    /**
+     * 用户注册
+     *
+     * @param user
+     * @param code
+     * @return
+     */
+    @PostMapping("/register")
+    public ResponseEntity<Void> register(User user, @RequestParam("code") String code) {
+        Boolean b = this.userService.register(user, code);
+        if (!b) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
