@@ -19,6 +19,7 @@
         <module>leyou-goods-web</module>
         <module>leyou-user</module>
         <module>leyou-sms</module>
+        <module>leyou-auth</module>
     </modules>
     <!--聚合工程-父工程-->
     <packaging>pom</packaging>
@@ -95,9 +96,20 @@
 
     <build>
         <plugins>
+            <!--<plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
