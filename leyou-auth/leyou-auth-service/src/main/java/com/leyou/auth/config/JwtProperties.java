@@ -13,7 +13,7 @@ import java.security.PublicKey;
 /**
  * Created with IntelliJ IDEA.
  *
- * @Description:
+ * @Description: jwt属性类
  * @author: kangyong
  * @date: 2020/10/21 22:40
  * @version: v1.0
@@ -34,13 +34,20 @@ public class JwtProperties {
 
     private PrivateKey privateKey; // 私钥
 
+    /**
+     * cookie名
+     */
+    private String cookieName;
+
+    private Integer cookieMaxAge;
+
     private static final Logger logger = LoggerFactory.getLogger(JwtProperties.class);
 
     /**
      * @PostContruct：在构造方法执行之后执行该方法
      */
     @PostConstruct
-    public void init(){
+    public void init() {
         try {
             File pubKey = new File(pubKeyPath);
             File priKey = new File(priKeyPath);
@@ -103,5 +110,21 @@ public class JwtProperties {
 
     public void setPrivateKey(PrivateKey privateKey) {
         this.privateKey = privateKey;
+    }
+
+    public String getCookieName() {
+        return cookieName;
+    }
+
+    public void setCookieName(String cookieName) {
+        this.cookieName = cookieName;
+    }
+
+    public Integer getCookieMaxAge() {
+        return cookieMaxAge;
+    }
+
+    public void setCookieMaxAge(Integer cookieMaxAge) {
+        this.cookieMaxAge = cookieMaxAge;
     }
 }
