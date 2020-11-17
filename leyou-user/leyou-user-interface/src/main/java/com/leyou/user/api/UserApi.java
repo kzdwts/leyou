@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @date: 2020/10/27 18:44
  * @version: v1.0
  */
-@RequestMapping("/user")
 public interface UserApi {
 
     /**
@@ -24,6 +23,9 @@ public interface UserApi {
      * @return
      */
     @GetMapping("/query")
-    User queryUser(@RequestParam("username") String username, @RequestParam("password") String password);
+    public User queryUser(
+            @RequestParam("username") String username,
+            @RequestParam("password") String password
+    );
 
 }

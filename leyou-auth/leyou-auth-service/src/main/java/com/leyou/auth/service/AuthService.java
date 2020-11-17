@@ -23,7 +23,7 @@ public class AuthService {
     private UserClient userClient;
 
     @Autowired
-    private JwtProperties jwtProp;
+    private JwtProperties jwtProperties;
 
     /**
      * 鉴权 验证用户名密码，返回token
@@ -32,16 +32,16 @@ public class AuthService {
      * @param password
      * @return
      */
-    public String authentication(String username, String password) {
+    public String accredit(String username, String password) {
         try {
             // 查询用户
-            User user = userClient.queryUser(username, password);
+            User user = this.userClient.queryUser(username, password);
             if (null == user) {
                 return null;
             }
 
             // 如果有查询结果，生成token
-            String token = JwtUtils.generateToken(new UserInfo(user.getId(), user.getUsername()), jwtProp.getPrivateKey(), jwtProp.getExpire());
+            String token = JwtUtils.generateToken(new UserInfo(user.getId(), user.getUsername()), jwtProperties.getPrivateKey(), jwtProperties.getExpire());
             return token;
         } catch (Exception e) {
             e.printStackTrace();

@@ -5,6 +5,7 @@ import com.leyou.auth.service.AuthService;
 import com.leyou.common.utils.CookieUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,7 +47,7 @@ public class AuthController {
                                                HttpServletRequest request,
                                                HttpServletResponse response) {
         // 登录校验
-        String token = this.authService.authentication(username, password);
+        String token = this.authService.accredit(username, password);
         if (StringUtils.isBlank(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
