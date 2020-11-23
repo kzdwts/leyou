@@ -20,6 +20,7 @@
         <module>leyou-user</module>
         <module>leyou-sms</module>
         <module>leyou-auth</module>
+        <module>leyou-cart</module>
     </modules>
     <!--聚合工程-父工程-->
     <packaging>pom</packaging>
