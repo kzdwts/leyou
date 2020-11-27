@@ -17,6 +17,7 @@ zuul:
     user-service: /user/**
     auth-service: /auth/**
     cart-service: /cart/**
+    order-service: /order/**
   add-host-header: true # 网关携带域名信息
   sensitive-headers:  # 设置为空，覆盖默认敏感头信息
 leyou:
