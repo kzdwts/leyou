@@ -1,0 +1,30 @@
+server:
+  port: 8089
+spring:
+  application:
+    name: order-service
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.10.132:3306/leyou?useSSL=false&serverTimezone=GMT%2B8&characterEncoding=utf-8
+    username: root
+    password: 1024KangYong@MySQL
+    hikari:
+      max-lifetime: 28830000 # 一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，建议设置比数据库超时时长少30秒，参考MySQL wait_timeout参数（show variables like '%timeout%';）
+      maximum-pool-size: 9 # 连接池中允许的最大连接数。缺省值：10；推荐的公式：((core_count * 2) + effective_spindle_count)
+  redis:
+    host: 192.168.10.132
+    port: 6379
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:10086/eureka
+  instance:
+    lease-renewal-interval-in-seconds: 5 # 5秒发送一次心跳
+    lease-expiration-duration-in-seconds: 10 # 10秒不发就过期
+# 参数
+leyou:
+  jwt:
+    pubKeyPath: C:\\tmp\\rsa\\rsa.pub # 公钥地址
+    cookieName: LY_TOKEN
+
+
