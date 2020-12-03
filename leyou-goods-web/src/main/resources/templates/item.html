@@ -677,7 +677,10 @@
 			addCart() {
 				// 判断是否登录
 				ly.verify().then(res => {
-
+					// 发送请求，购物车存入缓存
+					ly.http.post("/cart").then(() => {
+						window.location.href = "http://www.leyou.com/cart.html"
+					});
 				}).catch(() => {
 					// 未登录
 					// 判断是否已经有购物车
