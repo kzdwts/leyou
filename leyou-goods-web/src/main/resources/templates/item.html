@@ -678,7 +678,7 @@
 				// 判断是否登录
 				ly.verify().then(res => {
 					// 发送请求，购物车存入缓存
-					ly.http.post("/cart").then(() => {
+					ly.http.post("/cart", {skuId: this.sku.id, num: this.num}).then(() => {
 						window.location.href = "http://www.leyou.com/cart.html"
 					});
 				}).catch(() => {

@@ -44,7 +44,7 @@ public class CartService {
         BoundHashOperations<String, Object, Object> hashOperations = redisTemplate.boundHashOps(KEY_PREFIX + userInfo.getId());
         // 新增的商品数量
         Integer num = cart.getNum();
-        Long key = cart.getSkuId();
+        String key = cart.getSkuId().toString();
 
         // 判断当前商品是否在购物车中
         if (hashOperations.hasKey(key)) {
@@ -55,7 +55,7 @@ public class CartService {
         } else {
             // 不在，存入购物车
             // 查询商品详情
-            Sku sku = this.goodsClient.querySkuBySkuId(key);
+            Sku sku = this.goodsClient.querySkuBySkuId(cart.getSkuId());
             cart.setOwnSpec(sku.getOwnSpec());
             cart.setPrice(sku.getPrice());
             cart.setTitle(sku.getTitle());
