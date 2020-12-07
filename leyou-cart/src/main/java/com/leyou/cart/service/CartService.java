@@ -80,7 +80,7 @@ public class CartService {
 
         // 判断是否有当前用户的购物车数据
         if (!redisTemplate.hasKey(KEY_PREFIX + userInfo.getId())) {
-            return  null;
+            return null;
         }
 
         // 获取购物车详情数据
@@ -94,6 +94,50 @@ public class CartService {
 
         // 返回购物车数据
         return cartsJsonList.stream().map(cartJson -> JsonUtils.parse(cartJson.toString(), Cart.class)).collect(Collectors.toList());
+    }
+
+    /**
+     * 更新购物车商品数量
+     *
+     * @param cart
+     */
+    public void updateNum(Cart cart) {
+        // 获取用户信息
+        UserInfo userInfo = LoginInterceptor.getUserInfo();
+
+        // 判断是否有当前用户的购物车数据
+        if (!redisTemplate.hasKey(KEY_PREFIX + userInfo.getId())) {
+            return;
+        }
+
+        // 获取购物车数据
+        BoundHashOperations<String, Object, Object> hashOperations = redisTemplate.boundHashOps(KEY_PREFIX + userInfo.getId());
+        String cartJson = hashOperations.get(cart.getSkuId().toString()).toString();
+
+        Integer num = cart.getNum();
+        cart = JsonUtils.parse(cartJson, Cart.class);
+        cart.setNum(num);
+
+        // 写入缓存
+        hashOperations.put(cart.getSkuId().toString(), JsonUtils.serialize(cart));
+    }
+
+    /**
+     * 删除购物车商品
+     *
+     * @param skuId
+     */
+    public void deleteCart(String skuId) {
+        // 获取用户信息
+        UserInfo userInfo = LoginInterceptor.getUserInfo();
+
+        // 判断是否有当前用户的购物车数据
+        if (!redisTemplate.hasKey(KEY_PREFIX + userInfo.getId())) {
+            return;
+        }
+
+        BoundHashOperations<String, Object, Object> hashOperations = redisTemplate.boundHashOps(KEY_PREFIX + userInfo.getId());
+        hashOperations.delete(skuId);
     }
 
 }
