@@ -5,9 +5,13 @@ import com.leyou.cart.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,5 +38,19 @@ public class CartController {
         // 添加到购物车
         this.cartService.addCart(cart);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    /**
+     * 查询购物车数据
+     *
+     * @return
+     */
+    @GetMapping
+    public ResponseEntity<List<Cart>> queryCarts() {
+        List<Cart> cartList = this.cartService.queryCarts();
+        if (CollectionUtils.isEmpty(cartList)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(cartList);
     }
 }

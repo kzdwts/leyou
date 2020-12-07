@@ -11,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -63,6 +67,33 @@ public class CartService {
             cart.setImage(StringUtils.isBlank(sku.getImages()) ? "" : StringUtils.split(sku.getImages(), ",")[0]);
         }
         hashOperations.put(key, JsonUtils.serialize(cart));
+    }
+
+    /**
+     * 查询购物车数据
+     *
+     * @return 购物车数据
+     */
+    public List<Cart> queryCarts() {
+        // 获取用户信息
+        UserInfo userInfo = LoginInterceptor.getUserInfo();
+
+        // 判断是否有当前用户的购物车数据
+        if (!redisTemplate.hasKey(KEY_PREFIX + userInfo.getId())) {
+            return  null;
+        }
+
+        // 获取购物车详情数据
+        BoundHashOperations<String, Object, Object> hashOperations = redisTemplate.boundHashOps(KEY_PREFIX + userInfo.getId());
+        List<Object> cartsJsonList = hashOperations.values();
+
+        // 判断购物车详情数据是否为空
+        if (CollectionUtils.isEmpty(cartsJsonList)) {
+            return null;
+        }
+
+        // 返回购物车数据
+        return cartsJsonList.stream().map(cartJson -> JsonUtils.parse(cartJson.toString(), Cart.class)).collect(Collectors.toList());
     }
 
 }
