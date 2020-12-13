@@ -53,7 +53,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             // 放入线程域
             tl.set(userInfo);
             return true;
-        } finally {
+        } catch (Exception e){
             // 解析失败，未登录或超时，返回401
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return false;

@@ -29,6 +29,7 @@ public class LeyouCorsConfiguration {
         config.addAllowedMethod("POST");
         config.addAllowedMethod("PUT");
         config.addAllowedMethod("GET");
+        config.addAllowedMethod("DELETE");
         config.addAllowedHeader("*");
 
         // 添加映射路径
